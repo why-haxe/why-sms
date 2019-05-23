@@ -3,3 +3,4 @@
 -dce full
 
 -lib extern-js-aws-sdk
+-lib tink_unittest

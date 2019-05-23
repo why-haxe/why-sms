@@ -9,9 +9,9 @@ class Twilio implements Sms {
 	var twilio:Native;
 	var from:Phone;
 	
-	public function new(sid, token, from) {
-		this.twilio = new Native(sid, token);
-		this.from = from;
+	public function new(opt) {
+		twilio = new Native(opt.sid, opt.token);
+		from = opt.from;
 	}
 	
 	public function send(to:Phone, body:String):Promise<Noise> {
