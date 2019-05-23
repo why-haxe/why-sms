@@ -1,0 +1,17 @@
+{
+  "name": "why-sms",
+  "license": "MIT",
+  "tags": [
+    "sms"
+  ],
+  "classPath": "src",
+  "contributors": [
+    "kevinresol"
+  ],
+  "releasenote": "initial release",
+  "version": "0.0.0",
+  "description": "Abstraction of various SMS-sending API",
+	"dependencies": {
+		"tink_http": ""
+	}
+}
