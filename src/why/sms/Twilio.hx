@@ -7,7 +7,7 @@ using tink.CoreApi;
 #if nodejs
 class Twilio implements Sms {
 	var twilio:Native;
-	var from:Phone;
+	var from:From;
 	
 	public function new(opt) {
 		twilio = new Native(opt.sid, opt.token);
@@ -16,7 +16,10 @@ class Twilio implements Sms {
 	
 	public function send(to:Phone, body:String):Promise<Noise> {
 		return Promise.ofJsPromise(twilio.messages.create({
-			from: from,
+			from: switch from {
+				case Phone(phone): phone;
+				case SenderId(id): id;
+			},
 			to: to,
 			body: body,
 		}));
@@ -34,5 +37,10 @@ private extern class Messages {
 
 private extern class Message {
 	var sid:String;
+}
+
+private enum From {
+	Phone(phone:Phone);
+	SenderId(id:String);
 }
 #end
