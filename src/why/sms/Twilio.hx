@@ -15,14 +15,15 @@ class Twilio implements Sms {
 	}
 	
 	public function send(to:Phone, body:String):Promise<Noise> {
-		return Promise.ofJsPromise(twilio.messages.create({
-			from: switch from {
-				case Phone(phone): phone;
-				case SenderId(id): id;
-			},
-			to: to,
-			body: body,
-		}));
+		var opt:MessageCreateOptions = {to: to, body: body}
+		
+		switch from {
+			case Phone(phone): opt.from = phone;
+			case SenderId(id): opt.from = id;
+			case MessagingService(id): opt.messagingServiceSid = id;
+		}
+		
+		return Promise.ofJsPromise(twilio.messages.create(opt));
 	}
 }
 
@@ -32,7 +33,14 @@ private extern class Native {
 	function new(sid:String, token:String);
 }
 private extern class Messages {
-	function create(opt:{body:String, from:String, to:String}):js.Promise<Message>;
+	function create(opt:MessageCreateOptions):js.Promise<Message>;
+}
+
+private typedef MessageCreateOptions =	{
+	body:String, 
+	to:String,
+	?from:String,
+	?messagingServiceSid:String,
 }
 
 private extern class Message {
@@ -42,5 +50,6 @@ private extern class Message {
 private enum From {
 	Phone(phone:Phone);
 	SenderId(id:String);
+	MessagingService(id:String);
 }
 #end
