@@ -1,6 +1,10 @@
 package why.sms;
 
+#if !hxnodejs_twilio #error "Requires the hxnodejs-twilio library" #end
+
 import why.Sms;
+import twilio.Twilio as Native;
+import twilio.Messages;
 
 using tink.CoreApi;
 
@@ -25,26 +29,6 @@ class Twilio implements Sms {
 		
 		return Promise.ofJsPromise(twilio.messages.create(opt));
 	}
-}
-
-@:jsRequire('twilio')
-private extern class Native {
-	var messages:Messages;
-	function new(sid:String, token:String);
-}
-private extern class Messages {
-	function create(opt:MessageCreateOptions):js.Promise<Message>;
-}
-
-private typedef MessageCreateOptions =	{
-	body:String, 
-	to:String,
-	?from:String,
-	?messagingServiceSid:String,
-}
-
-private extern class Message {
-	var sid:String;
 }
 
 private enum From {
