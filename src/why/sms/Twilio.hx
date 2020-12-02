@@ -4,7 +4,7 @@ package why.sms;
 
 import why.Sms;
 import twilio.Twilio as Native;
-import twilio.Messages;
+import twilio.lib.rest.api.v2010.account.message.MessageListInstanceCreateOptions;
 
 using tink.CoreApi;
 
@@ -19,7 +19,7 @@ class Twilio implements Sms {
 	}
 	
 	public function send(to:Phone, body:String):Promise<Noise> {
-		var opt:MessageCreateOptions = {to: to, body: body}
+		var opt:MessageListInstanceCreateOptions = {to: to, body: body}
 		
 		switch from {
 			case Phone(phone): opt.from = phone;
